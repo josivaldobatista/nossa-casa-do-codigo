@@ -1,27 +1,27 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.32"
-    id("org.jetbrains.kotlin.kapt") version "1.4.32"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("io.micronaut.application") version "1.5.3"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.4.32"
+  id("org.jetbrains.kotlin.jvm") version "1.4.32"
+  id("org.jetbrains.kotlin.kapt") version "1.4.32"
+  id("com.github.johnrengelman.shadow") version "7.0.0"
+  id("io.micronaut.application") version "1.5.3"
+  id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
+  id("org.jetbrains.kotlin.plugin.jpa") version "1.4.32"
 }
 
 version = "0.1"
 group = "br.com.zup"
 
-val kotlinVersion=project.properties.get("kotlinVersion")
+val kotlinVersion = project.properties.get("kotlinVersion")
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 micronaut {
-    runtime("netty")
-    testRuntime("junit5")
-    processing {
-        incremental(true)
-        annotations("br.com.zup.*")
-    }
+  runtime("netty")
+  testRuntime("junit5")
+  processing {
+    incremental(true)
+    annotations("br.com.zup.*")
+  }
 }
 
 dependencies {
@@ -46,25 +46,22 @@ dependencies {
 
 }
 
-
 application {
-    mainClass.set("br.com.zup.ApplicationKt")
+  mainClass.set("br.com.zup.ApplicationKt")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
+  sourceCompatibility = JavaVersion.toVersion("11")
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "11"
-        }
+  compileKotlin {
+    kotlinOptions {
+      jvmTarget = "11"
     }
-    compileTestKotlin {
-        kotlinOptions {
-            jvmTarget = "11"
-        }
+  }
+  compileTestKotlin {
+    kotlinOptions {
+      jvmTarget = "11"
     }
-
-
+  }
 }
