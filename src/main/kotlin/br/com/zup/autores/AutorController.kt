@@ -1,12 +1,8 @@
 package br.com.zup.autores
 
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpResponse.created
-import io.micronaut.http.HttpResponse.ok
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
+import io.micronaut.http.HttpResponse.*
+import io.micronaut.http.annotation.*
 import io.micronaut.http.uri.UriBuilder
 import io.micronaut.validation.Validated
 import javax.validation.Valid
@@ -16,7 +12,7 @@ import javax.validation.Valid
 class AutorController(val autorRepository: AutorRepository) {
 
   @Post
-  fun cadastrar(@Body @Valid request: AutorRequest): HttpResponse<Any> {
+  fun create(@Body @Valid request: AutorRequest): HttpResponse<Any> {
     val autor = request.toModel()
     autorRepository.save(autor)
 
@@ -27,9 +23,36 @@ class AutorController(val autorRepository: AutorRepository) {
   }
 
   @Get
-  fun buscarAutores(): HttpResponse<List<AutorResponse>> {
+  fun read(): HttpResponse<List<AutorResponse>> {
     val autores: MutableIterable<Autor> = autorRepository.findAll()
     val resposta = autores.map { autor -> AutorResponse(autor) }
     return ok(resposta)
+  }
+
+  @Patch("/{id}")
+  fun update(@PathVariable id: Long, descricao: String): HttpResponse<Any> {
+    val possivelAutor = autorRepository.findById(id)
+
+    if (possivelAutor.isEmpty) {
+      return notFound()
+    }
+
+    val autor = possivelAutor.get()
+    autor.descricao = descricao
+    autorRepository.update(autor)
+
+    return ok(AutorResponse(autor))
+  }
+
+  @Delete("/{id}")
+  fun delete(@PathVariable id: Long): HttpResponse<Any> {
+    val possivelAutor = autorRepository.findById(id)
+
+    if (possivelAutor.isEmpty) {
+      return notFound()
+    }
+    autorRepository.deleteById(id)
+
+    return noContent()
   }
 }
