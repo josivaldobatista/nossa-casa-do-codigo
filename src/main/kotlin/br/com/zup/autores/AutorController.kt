@@ -36,7 +36,7 @@ class AutorController(val autorRepository: AutorRepository) {
       val resposta = autores.map { autor -> AutorResponse(autor) }
       return ok(resposta)
     }
-    val possivelAutor = autorRepository.findByEmail(email)
+    val possivelAutor = autorRepository.buscarByEmailQueryJpql(email)
     if (possivelAutor.isEmpty) {
       return notFound()
     }
