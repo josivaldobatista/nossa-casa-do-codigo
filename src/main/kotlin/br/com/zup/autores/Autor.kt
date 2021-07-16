@@ -1,5 +1,6 @@
 package br.com.zup.autores
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
@@ -16,6 +17,8 @@ class Autor(
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   var id: Long? = null
   var uuid: String = UUID.randomUUID().toString()
+
+  @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
   var criadoEm: LocalDateTime = LocalDateTime.now()
-    private set
+  private set
 }

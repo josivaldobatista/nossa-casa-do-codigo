@@ -29,6 +29,20 @@ class AutorController(val autorRepository: AutorRepository) {
     return ok(resposta)
   }
 
+  @Get("/buscarPor")
+  fun findByEmail(@QueryValue(value = "") email: String): HttpResponse<Any> {
+    if (email.isEmpty()) {
+      val autores = autorRepository.findAll()
+      val resposta = autores.map { autor -> AutorResponse(autor) }
+      return ok(resposta)
+    }
+    val possivelAutor = autorRepository.findByEmail(email)
+    if (possivelAutor.isEmpty) {
+      return notFound()
+    }
+    return ok(possivelAutor.get())
+  }
+
   @Patch("/{id}")
   fun update(@PathVariable id: Long, descricao: String): HttpResponse<Any> {
     val possivelAutor = autorRepository.findById(id)
