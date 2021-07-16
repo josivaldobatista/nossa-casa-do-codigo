@@ -51,7 +51,8 @@ class AutorController(val autorRepository: AutorRepository) {
     if (possivelAutor.isEmpty) {
       return notFound()
     }
-    autorRepository.deleteById(id)
+    autorRepository.delete(possivelAutor.get()) //<- também posso fazer assim
+    //autorRepository.deleteById(id)
 
     return noContent()
   }
