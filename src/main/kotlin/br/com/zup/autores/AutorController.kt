@@ -5,6 +5,7 @@ import io.micronaut.http.HttpResponse.*
 import io.micronaut.http.annotation.*
 import io.micronaut.http.uri.UriBuilder
 import io.micronaut.validation.Validated
+import javax.transaction.Transactional
 import javax.validation.Valid
 
 @Validated
@@ -12,6 +13,7 @@ import javax.validation.Valid
 class AutorController(val autorRepository: AutorRepository) {
 
   @Post
+  @Transactional
   fun create(@Body @Valid request: AutorRequest): HttpResponse<Any> {
     val autor = request.toModel()
     autorRepository.save(autor)
@@ -23,6 +25,7 @@ class AutorController(val autorRepository: AutorRepository) {
   }
 
   @Get
+  @Transactional
   fun read(): HttpResponse<List<AutorResponse>> {
     val autores: MutableIterable<Autor> = autorRepository.findAll()
     val resposta = autores.map { autor -> AutorResponse(autor) }
@@ -30,6 +33,7 @@ class AutorController(val autorRepository: AutorRepository) {
   }
 
   @Get("/buscarPor")
+  @Transactional
   fun findByEmail(@QueryValue(value = "") email: String): HttpResponse<Any> {
     if (email.isEmpty()) {
       val autores = autorRepository.findAll()
@@ -44,6 +48,7 @@ class AutorController(val autorRepository: AutorRepository) {
   }
 
   @Patch("/{id}")
+  @Transactional
   fun update(@PathVariable id: Long, descricao: String): HttpResponse<Any> {
     val possivelAutor = autorRepository.findById(id)
 
@@ -53,12 +58,20 @@ class AutorController(val autorRepository: AutorRepository) {
 
     val autor = possivelAutor.get()
     autor.descricao = descricao
-    autorRepository.update(autor)
+
+    /**
+     * Com o @Transational não preciso fazer o update usando o repository de autor
+     * explicitamente pois caso tenha alguma modificação no estado da minha
+     * classe será feito de forma automatica o update pelo hibernate no final da
+     * transação.
+     * */
+    // autorRepository.update(autor)
 
     return ok(AutorResponse(autor))
   }
 
   @Delete("/{id}")
+  @Transactional
   fun delete(@PathVariable id: Long): HttpResponse<Any> {
     val possivelAutor = autorRepository.findById(id)
 
