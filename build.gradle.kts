@@ -36,6 +36,7 @@ dependencies {
   runtimeOnly("ch.qos.logback:logback-classic")
   runtimeOnly("com.h2database:h2")
   implementation("io.micronaut:micronaut-validation")
+  implementation("io.micronaut.xml:micronaut-jackson-xml")
 
   //JPA
   implementation("io.micronaut.data:micronaut-data-hibernate-jpa")

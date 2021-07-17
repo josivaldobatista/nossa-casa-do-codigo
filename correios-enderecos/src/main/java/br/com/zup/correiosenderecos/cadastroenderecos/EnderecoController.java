@@ -3,6 +3,7 @@ package br.com.zup.correiosenderecos.cadastroenderecos;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping(value = "/api/enderecos")
+@RequestMapping(value = "/api/enderecos", produces = MediaType.APPLICATION_XML_VALUE)
 public class EnderecoController {
 
 	private EnderecoRepository repository;
@@ -33,7 +34,7 @@ public class EnderecoController {
     return ResponseEntity.created(uri).body(endereco);
   }
 	
-	@GetMapping(value = "/{cep}")
+	@GetMapping(value = "/{cep}", produces = MediaType.APPLICATION_XML_VALUE)
 	public ResponseEntity<?> buscarPorCep(@PathVariable("cep")  String cep) {
 		Optional<Endereco> possivelEndereco = repository.findByCep(cep);
 		
