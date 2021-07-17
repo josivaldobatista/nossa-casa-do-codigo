@@ -10,7 +10,8 @@ import javax.persistence.*
 class Autor(
   val nome: String,
   val email: String,
-  var descricao: String
+  var descricao: String,
+  val endereco: Endereco
 ) {
 
   @Id

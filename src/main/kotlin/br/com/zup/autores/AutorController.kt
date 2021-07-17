@@ -10,12 +10,17 @@ import javax.validation.Valid
 
 @Validated
 @Controller(value = "/api/autores")
-class AutorController(val autorRepository: AutorRepository) {
+class AutorController(
+  val autorRepository: AutorRepository,
+  val enderecoCliente: EnderecoClient
+) {
 
   @Post
   @Transactional
   fun create(@Body @Valid request: AutorRequest): HttpResponse<Any> {
-    val autor = request.toModel()
+    val enderecoResponse = enderecoCliente.consulta(request.cep)
+
+    val autor = request.toModel(enderecoResponse.body()!!)
     autorRepository.save(autor)
 
     val uri = UriBuilder.of("/api/autores/{id}")
