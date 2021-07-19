@@ -33,23 +33,24 @@ class AutorController(
   @Transactional
   fun read(): HttpResponse<List<AutorResponse>> {
     val autores: MutableIterable<Autor> = autorRepository.findAll()
-    val resposta = autores.map { autor -> AutorResponse(autor) }
+    val resposta = autores.map { autor -> AutorResponse(autor.nome, autor.email, autor.descricao) }
     return ok(resposta)
   }
 
   @Get("/buscarPor")
   @Transactional
   fun findByEmail(@QueryValue(value = "") email: String): HttpResponse<Any> {
-    if (email.isEmpty()) {
+    if (email.isBlank()) {
       val autores = autorRepository.findAll()
-      val resposta = autores.map { autor -> AutorResponse(autor) }
+      val resposta = autores.map { autor -> AutorResponse(autor.nome, autor.email, autor.descricao) }
       return ok(resposta)
     }
     val possivelAutor = autorRepository.buscarByEmailQueryJpql(email)
     if (possivelAutor.isEmpty) {
       return notFound()
     }
-    return ok(possivelAutor.get())
+    val autor = possivelAutor.get()
+    return ok(AutorResponse(autor.nome, autor.email, autor.descricao))
   }
 
   @Patch("/{id}")
@@ -72,7 +73,7 @@ class AutorController(
      * */
     // autorRepository.update(autor)
 
-    return ok(AutorResponse(autor))
+    return ok(AutorResponse(autor.nome, autor.email, autor.descricao))
   }
 
   @Delete("/{id}")

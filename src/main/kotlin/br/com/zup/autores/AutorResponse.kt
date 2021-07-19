@@ -1,9 +1,8 @@
 package br.com.zup.autores
 
-class AutorResponse(autor: Autor) {
+class AutorResponse(
+  val nome: String,
+  val email: String,
+  val descricao: String
+)
 
-  val nome = autor.nome
-  val email = autor.email
-  val descicao = autor.descricao
-
-}
