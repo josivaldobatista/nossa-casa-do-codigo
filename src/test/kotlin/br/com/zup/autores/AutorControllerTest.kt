@@ -66,8 +66,10 @@ internal class AutorControllerTest {
   @Test
   fun `deve cadastrar um novo autor`() {
     // Cenário
-    val autorRequest = AutorRequest("Bob Brown", "bob@email.com",
-      "Escritor Bob Brown nascido hoje", "951", "52963987")
+    val autorRequest = AutorRequest(
+      "Bob Brown", "bob@email.com",
+      "Escritor Bob Brown nascido hoje", "951", "52963987"
+    )
 
     val enderecoResponse = EnderecoResponse(
       logradouro = "Rua das Rosas", cidade = "São Paulo", estado = "SP", "44B", cep = "98654123"
